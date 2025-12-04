@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MD2</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        nav {
+            margin-top: 15px;
+        }
+
+        nav button {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 10px 25px;
+            margin: 5px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        nav button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .card h2 {
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+
+        .card p {
+            line-height: 1.8;
+            font-size: 1.1em;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .grid-item {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .grid-item:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .grid-item i {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 16px;
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        button[type="submit"] {
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            color: white;
+            padding: 15px 40px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        button[type="submit"]:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .counter {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .counter-number {
+            font-size: 4em;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .counter-buttons {
+            margin-top: 20px;
+        }
+
+        .counter-buttons button {
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            margin: 0 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            transition: all 0.3s ease;
+            width: 60px;
+            height: 60px;
+        }
+
+        .counter-buttons button:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(1.1);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.2);
+            margin-top: 50px;
+        }
+
+        .success-message {
+            background: rgba(76, 175, 80, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🚀 موقع فضائح</h1>
+        <nav>
+            <button onclick="showSection('home')">الرئيسية</button>
+            <button onclick="showSection('about')">من نحن</button>
+            <button onclick="showSection('services')">خدماتنا</button>
+            <button onclick="showSection('counter')">العداد</button>
+            <button onclick="showSection('contact')">اتصل بنا</button>
+        </nav>
+    </header>
+
+    <div class="container">
+        <!-- الصفحة الرئيسية -->
+        <div id="home" class="section active">
+            <div class="card">
+                <h2>مرحباً بك في موقعنا! 👋</h2>
+                <p>هذا موقع تفاعلي مصمم خصيصاً من MD2   يحتوي على عدة أقسام وميزات تفاعلية رائعة!</p>
+                <p>استكشف القوائم في الأعلى للتنقل بين الصفحات المختلفة.</p>
+            </div>
+
+            <div class="grid">
+                <div class="grid-item" onclick="showSection('about')">
+                    <div style="font-size: 3em;">ℹ️</div>
+                    <h3>من نحن</h3>
+                    <p>تعرف علينا أكثر</p>
+                </div>
+                <div class="grid-item" onclick="showSection('services')">
+                    <div style="font-size: 3em;">⚙️</div>
+                    <h3>خدماتنا</h3>
+                    <p>اكتشف ما نقدمه</p>
+                </div>
+                <div class="grid-item" onclick="showSection('counter')">
+                    <div style="font-size: 3em;">🔢</div>
+                    <h3>العداد</h3>
+                    <p>جرب العداد التفاعلي</p>
+                </div>
+                <div class="grid-item" onclick="showSection('contact')">
+                    <div style="font-size: 3em;">📧</div>
+                    <h3>اتصل بنا</h3>
+                    <p>نحن بانتظار رسالتك</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- صفحة من نحن -->
+        <div id="about" class="section">
+            <div class="card">
+                <h2>من نحن 🌟</h2>
+                <p>نحن فريق متحمس من المطورين والمصممين المبدعين. نعمل على تقديم أفضل الحلول التقنية والتصاميم الجذابة.</p>
+                <p>مهمتنا هي جعل الفضاءح اكثر سهولة وجمالاً للجميع. نؤمن بقوة الإبداع والابتكار في تحسين تجربة المستخدم.</p>
+            </div>
+        </div>
+
+        <!-- صفحة الخدمات -->
+        <div id="services" class="section">
+            <div class="card">
+                <h2>خدماتنا 🛠️</h2>
+                <div class="grid">
+                    <div class="grid-item">
+                        <div style="font-size: 3em;">💻</div>
+                        <h3>تطوير المواقع</h3>
+                        <p>نصمم مواقع حديثة ومتجاوبة</p>
+                    </div>
+                    <div class="grid-item">
+                        <div style="font-size: 3em;">📱</div>
+                        <h3>تطبيقات الجوال</h3>
+                        <p>تطبيقات ذكية لجميع المنصات</p>
+                    </div>
+                    <div class="grid-item">
+                        <div style="font-size: 3em;">🎨</div>
+                        <h3>التصميم الإبداعي</h3>
+                        <p>تصاميم فريدة تعبر عن علامتك</p>
+                    </div>
+                    <div class="grid-item">
+                        <div style="font-size: 3em;">🚀</div>
+                        <h3>التسويق الرقمي</h3>
+                        <p>نساعدك في الوصول لجمهورك</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- صفحة العداد -->
+        <div id="counter" class="section">
+            <div class="card">
+                <h2>العداد التفاعلي 🎯</h2>
+                <div class="counter">
+                    <div class="counter-number" id="counterValue">0</div>
+                    <div class="counter-buttons">
+                        <button onclick="decreaseCounter()">-</button>
+                        <button onclick="resetCounter()">↻</button>
+                        <button onclick="increaseCounter()">+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- صفحة الاتصال -->
+        <div id="contact" class="section">
+            <div class="card">
+                <h2>اتصل بنا 📬</h2>
+                <p>نحن نحب أن نسمع منك! أرسل لنا رسالة وسنرد عليك في أقرب وقت.</p>
+                <div class="success-message" id="successMessage">
+                    ✅ تم إرسال رسالتك بنجاح!
+                </div>
+                <form onsubmit="submitForm(event)">
+                    <input type="text" placeholder="الاسم" required>
+                    <input type="email" placeholder="البريد الإلكتروني" required>
+                    <textarea rows="5" placeholder="رسالتك" required></textarea>
+                    <button type="submit">إرسال الرسالة</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>موقعي المحترم | MD2 </p>
+    </footer>
+
+    <script>
+        let counter = 0;
+
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        function increaseCounter() {
+            counter++;
+            document.getElementById('counterValue').textContent = counter;
+        }
+
+        function decreaseCounter() {
+            counter--;
+            document.getElementById('counterValue').textContent = counter;
+        }
+
+        function resetCounter() {
+            counter = 0;
+            document.getElementById('counterValue').textContent = counter;
+        }
+
+        function submitForm(event) {
+            event.preventDefault();
+            const successMessage = document.getElementById('successMessage');
+            successMessage.style.display = 'block';
+            event.target.reset();
+            
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 3000);
+        }
+    </script>
+</body>
+                      </html>
